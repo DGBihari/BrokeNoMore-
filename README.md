@@ -38,7 +38,7 @@ Grocery, Restaurant, Rent, Health expenses, Salary, Inheritance, Gift
 
 **Budget**
 
-```json
+```json5
 {
 	"id": 1,  // <Required>
 	"name": "April25", // <Required>
