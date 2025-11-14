@@ -1,8 +1,10 @@
-using BrokerNoMore.Components;
+using BrokeNoMore.Components;
+using BrokeNoMore.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<DataService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

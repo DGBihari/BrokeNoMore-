@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokerNoMore", "BrokerNoMore\BrokerNoMore.csproj", "{62174917-C452-4E3B-8DD8-3213C546B623}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrokeNoMore", "BrokeNoMore\BrokeNoMore.csproj", "{62174917-C452-4E3B-8DD8-3213C546B623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
