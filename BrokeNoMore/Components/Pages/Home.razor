@@ -133,59 +133,60 @@
             <button class="btn btn-primary" @onclick="ShowAddForm">+ Add Transaction</button>
         </div>
     </div>
-
-    @if (_showForm)
-    {
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">@(_editingTransaction != null ? "Edit" : "Add") Transaction</h5>
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label">Type</label>
-                        <select class="form-select" @bind="_formType">
-                            <option value="expense">Expense</option>
-                            <option value="income">Income</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Amount</label>
-                        <input type="number" class="form-control" @bind="_formAmount" step="0.01" />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Category</label>
-                        <select class="form-select" @bind="_formCategory">
-                            <option value="">Select...</option>
-                            @foreach (var cat in ReadCategories())
-                            {
-                                <option value="@cat">@cat</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Date & Time</label>
-                        <input type="datetime-local" class="form-control" @bind="_formTimestamp" />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label">Budget</label>
-                        <select class="form-select" @bind="_formBudgetId">
-                            <option value="">None</option>
-                            @foreach (var budget in ReadBudgets())
-                            {
-                                <option value="@budget.Id">@budget.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-12">
-                        <label class="form-label">Description</label>
-                        <input type="text" class="form-control" @bind="_formDescription" />
-                    </div>
-                    <div class="col-md-12">
-                        <button class="btn btn-success" @onclick="SaveTransaction">Save</button>
-                        <button class="btn btn-secondary ms-2" @onclick="CancelForm">Cancel</button>
+    @if (_showAddForms){
+        @if (_showForm)
+        {
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">@(_editingTransaction != null ? "Edit" : "Add") Transaction</h5>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Type</label>
+                            <select class="form-select" @bind="_formType">
+                                <option value="expense">Expense</option>
+                                <option value="income">Income</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Amount</label>
+                            <input type="number" class="form-control" @bind="_formAmount" step="0.01" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" @bind="_formCategory">
+                                <option value="">Select...</option>
+                                @foreach (var cat in ReadCategories())
+                                {
+                                    <option value="@cat">@cat</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date & Time</label>
+                            <input type="datetime-local" class="form-control" @bind="_formTimestamp" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Budget</label>
+                            <select class="form-select" @bind="_formBudgetId">
+                                <option value="">None</option>
+                                @foreach (var budget in ReadBudgets())
+                                {
+                                    <option value="@budget.Id">@budget.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="form-label">Description</label>
+                            <input type="text" class="form-control" @bind="_formDescription" />
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-success" @onclick="SaveTransaction">Save</button>
+                            <button class="btn btn-secondary ms-2" @onclick="CancelForm">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     }
 
     <div class="table-responsive">
@@ -215,9 +216,10 @@
                         <td>@transaction.Category</td>
                         <td>@transaction.Description</td>
                         <td>@GetBudgetName(transaction.BudgetId)</td>
-                        <td>
+                        <td class = "actions-cell">
+
                             <button class="btn btn-sm btn-outline-primary" @onclick="() => EditTransaction(transaction)">Edit</button>
-                            <button class="btn btn-sm btn-outline-danger ms-1" @onclick="() => DeleteTransactionConfirm(transaction)">Delete</button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" @onclick="() => DeleteTransactionConfirm(transaction)">Delete</button>
                         </td>
                     </tr>
                 }

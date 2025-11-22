@@ -31,6 +31,8 @@ public partial class Home
     private string _searchId = "";
     private decimal _balance = new Random().Next(1000, 10001);
     private bool _showBudgets = false;
+    private bool _showAddForms = false;
+
 
     protected override void OnInitialized()
     {
@@ -105,6 +107,7 @@ public partial class Home
 
     private void ShowAddForm()
     {
+        _showAddForms = !_showAddForms;
         _showForm = true;
         _editingTransaction = null;
         _formType = "expense";
@@ -254,6 +257,7 @@ public partial class Home
 
     private void ShowAddBudgetForm()
     {
+        _showBudgets = !_showBudgets;
         _showBudgetForm = true;
         _editingBudget = null;
         _budgetName = "";
