@@ -34,6 +34,7 @@ public partial class Home
     private bool _showAddForms = false;
     private bool _showEditTransactionsForm = false;
     private string _formCurrency = "";
+    private bool _showDeleteConfirm = false;
 
 
 
@@ -330,6 +331,34 @@ public partial class Home
     }
 
     private void CancelEdit()
+    {
+        _showEditTransactionsForm = false;
+        _editingTransaction = null;
+    }
+
+    private void ShowDeleteConfirm(Transaction transaction)
+    {
+        _editingTransaction = transaction;
+        _showDeleteConfirm = true;
+    }
+
+    private void CancelDelete()
+    {
+        _showDeleteConfirm = false;
+        _editingTransaction = null;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        if (_editingTransaction != null)
+        {
+            DeleteTransaction(_editingTransaction);
+            await RefreshCharts();
+        }
+        _showDeleteConfirm = false;
+        _editingTransaction = null;
+    }
+    private void CancelTransactionDelete()
     {
         _showEditTransactionsForm = false;
         _editingTransaction = null;

@@ -222,13 +222,12 @@
                             <button class="btn btn-sm btn-outline-primary" @onclick="() => EditTransaction(transaction)">Edit</button>
                             
 
-                            <button class="btn btn-sm btn-outline-danger delete-btn" @onclick="() => DeleteTransactionConfirm(transaction)">Delete</button>
+                            <button class="btn btn-sm btn-outline-danger delete-btn" @onclick="() => ShowDeleteConfirm(transaction)">Delete</button>
                         </td>
                     </tr>
                 }
                 <!-- Modal Overlay (edit window) -->
-                @if (_showEditTransactionsForm && _editingTransaction != null)
-                {
+                @if (_showEditTransactionsForm && _editingTransaction != null) {
                     <div class="modal fade show d-block" tabindex="-1" style="background: rgba(,0,0,0.5);">
                         <div class="modal-dialog">
                             <div class="modal-content p-3 rounded-3 shadow">
@@ -287,7 +286,27 @@
             </tbody>
         </table>
     </div>
-
+    <!-- Delete Confirmation Modal -->
+    @if (_showDeleteConfirm && _editingTransaction != null)
+    {
+        <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+            <div class="modal-content p-3 rounded-3 shadow" style="max-width: 400px; margin: 100px auto;">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Confirm Delete</h5>
+                    <button type="button" class="btn-close" @onclick="CancelDelete"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this transaction?</p>
+                    <p class="text-muted"><small>ID: @_editingTransaction.Id</small></p>
+                    <p class="text-muted"><small>Amount: €@_editingTransaction.Amount.ToString("F2")</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CancelDelete">Cancel</button>
+                    <button class="btn btn-danger" @onclick="ConfirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    }
     <nav>
         <ul class="pagination justify-content-center">
             <li class="page-item @(_currentPage == 1 ? "disabled" : "")">
