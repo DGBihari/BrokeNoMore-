@@ -355,6 +355,7 @@ public partial class Home
         }
 
         _dataService.SaveTransactions(transactions);
+        LoadData();
         CancelEdit(); // close modal
         StateHasChanged(); // refresh table UI
     }
