@@ -20,7 +20,7 @@ public partial class Home
     private decimal _formAmount = 0;
     private string _formCategory = "";
     private string _formDescription = "";
-    private DateTime _formTimestamp = DateTime.Now;
+    private DateTime _formTimestamp;
     private int? _formBudgetId = null;
     private bool _showBudgetForm = false;
     private Budget? _editingBudget = null;
@@ -32,6 +32,9 @@ public partial class Home
     private decimal _balance = new Random().Next(1000, 10001);
     private bool _showBudgets = false;
     private bool _showAddForms = false;
+    private bool _showEditTransactionsForm = false;
+    private string _formCurrency = "";
+
 
 
     protected override void OnInitialized()
@@ -52,7 +55,11 @@ public partial class Home
                 new { income = yearly.income, expense = yearly.expense });
         }
     }
-
+    private string FormTimestampLocal
+    {
+        get => _formTimestamp.ToString("yyyy-MM-ddTHH:mm");
+        set => _formTimestamp = DateTime.Parse(value);
+    }
     private void LoadData()
     {
         _transactions = _dataService.GetTransactions();
@@ -116,17 +123,22 @@ public partial class Home
         _formDescription = "";
         _formTimestamp = DateTime.Now;
     }
-
+    
     private void EditTransaction(Transaction transaction)
     {
+        //Console.WriteLine("Edit clicked for: " + transaction.Id); 
         _showForm = true;
+        _showEditTransactionsForm = true;
         _editingTransaction = transaction;
         _formType = transaction.Type;
         _formAmount = Math.Abs(transaction.Amount);
+        _formCurrency = transaction.Currency;
         _formCategory = transaction.Category ?? "";
         _formDescription = transaction.Description ?? "";
         _formTimestamp = transaction.Timestamp;
         _formBudgetId = transaction.BudgetId;
+
+        //StateHasChanged();
     }
 
     private async Task SaveTransaction()
@@ -310,4 +322,41 @@ public partial class Home
     {
         DeleteBudget(id);
     }
+
+    private string _formTimestampString
+    {
+        get => _formTimestamp.ToString("yyyy-MM-ddTHH:mm");
+        set => _formTimestamp = DateTime.Parse(value);
+    }
+
+    private void CancelEdit()
+    {
+        _showEditTransactionsForm = false;
+        _editingTransaction = null;
+    }
+    private void SaveEdit()
+    {
+        var transactions = _dataService.GetTransactions();
+        var index = transactions.FindIndex(t => t.Id == _editingTransaction!.Id);
+
+        if (index != -1)
+        {
+            transactions[index] = new Transaction
+            {
+                Id = _editingTransaction.Id, // keep same ID
+                Timestamp = _formTimestamp,
+                Type = _formType,
+                Amount = _formType == "income" ? _formAmount : -_formAmount,
+                Currency = _formCurrency,
+                Category = _formCategory,
+                Description = _formDescription,
+                BudgetId = _editingTransaction.BudgetId // KEEP original budget, not editable
+            };
+        }
+
+        _dataService.SaveTransactions(transactions);
+        CancelEdit(); // close modal
+        StateHasChanged(); // refresh table UI
+    }
+
 }

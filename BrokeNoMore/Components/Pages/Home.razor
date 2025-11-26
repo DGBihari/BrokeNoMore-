@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-
+    <!-- Budgets Section -->
     <div class="card mb-4">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -189,6 +189,7 @@
         }
     }
 
+    <!-- Transactions table -->
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead class="table-dark">
@@ -219,10 +220,70 @@
                         <td class = "actions-cell">
 
                             <button class="btn btn-sm btn-outline-primary" @onclick="() => EditTransaction(transaction)">Edit</button>
+                            
+
                             <button class="btn btn-sm btn-outline-danger delete-btn" @onclick="() => DeleteTransactionConfirm(transaction)">Delete</button>
                         </td>
                     </tr>
                 }
+                <!-- Modal Overlay (edit window) -->
+                @if (_showEditTransactionsForm && _editingTransaction != null)
+                {
+                    <div class="modal fade show d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+                        <div class="modal-dialog">
+                            <div class="modal-content p-3 rounded-3 shadow">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">Edit Transaction</h5>
+                                    <button type="button" class="btn-close" @onclick="CancelEdit"></button>
+                                </div>
+
+                                <div class="modal-body">
+
+                                    <label class="form-label">Date & Time</label>
+                                    <input type="datetime-local"
+                                           class="form-control mb-3"
+                                           @bind-value="_formTimestamp"
+                                           @bind-value:event="oninput" />
+
+
+                                    <!-- Type (editable) -->
+                                    <label class="form-label">Type</label>
+                                    <select class="form-select mb-3" @bind="_formType">
+                                        <option value="income">Income</option>
+                                        <option value="expense">Expense</option>
+                                    </select>
+
+                                    <!-- Amount (editable) -->
+                                    <label class="form-label">Amount</label>
+                                    <input type="number" class="form-control mb-3"
+                                           @bind="_formAmount">
+
+                                    <!-- Currency (editable) -->
+                                    <label class="form-label">Currency</label>
+                                    <input class="form-control mb-3"
+                                           @bind="_formCurrency">
+
+                                    <!-- Category (editable) -->
+                                    <label class="form-label">Category</label>
+                                    <input class="form-control mb-3"
+                                           @bind="_formCategory">
+
+                                    <!-- Description (editable) -->
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control mb-3"
+                                              @bind="_formDescription"></textarea>
+
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                                    <button class="btn btn-success" @onclick="SaveEdit">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
             </tbody>
         </table>
     </div>
